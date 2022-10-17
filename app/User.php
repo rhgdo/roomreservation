@@ -36,4 +36,28 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Reservationモデルとの関係を定義★
+     */
+    public function reservations()
+    {
+        return $this->belongsToMany(Reservation::class, 'user_reservation', 'user_id', 'reservation_id')->withTimestamps();
+    }
+    
+    /**
+     * $reservationIdで指定された予約を確保する。
+     *
+     * @param  int  $reservationId
+     * @return bool
+     */
+    public function reserved($reservationId)
+    {
+        $this->reservations()->attach($reservationId);
+        return true;
+    }
+
+    
+    
+    
 }
